@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRICKETINFO</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-bar.css') }}">
+    <style>
+        .news-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .news-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .news-item h3 {
+            margin-top: 0;
+        }
+        .news-item p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/cricbuzz-logo.png') }}" alt="Cricbuzz Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Live Scores</a></li>
+            <li><a href="#">Schedule</a></li>
+            <li><a href="#">Archives</a></li>
+            <li class="dropdown">
+                <a href="#">News &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Latest News</a></li>
+                    <li><a href="#">Top Stories</a></li>
+                    <li><a href="#">Editor's Pick</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Series &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Upcoming Series</a></li>
+                    <li><a href="#">Ongoing Series</a></li>
+                    <li><a href="#">Recent Series</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Teams &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Team A</a></li>
+                    <li><a href="#">Team B</a></li>
+                    <li><a href="#">Team C</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Videos &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">Latest Videos</a></li>
+                    <li><a href="#">Popular Videos</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Rankings &#9662;</a>
+                <ul class="dropdown-content">
+                    <li><a href="#">ODI Rankings</a></li>
+                    <li><a href="#">Test Rankings</a></li>
+                    <li><a href="#">T20 Rankings</a></li>
+                </ul>
+            </li>
+            <li><a href="/login">Cricbuzz Plus</a></li>
+            <li><a href="#"><img src="{{ url_for('static', filename='images/search-icon.png') }}" alt="Search"></a></li>
+            <li><a href="#"><img src="{{ url_for('static', filename='images/profile-icon.png') }}" alt="Profile"></a></li>
+        </ul>
+    </nav>
+
+    <!-- Debug statement -->
+    <p>Debug - News data: {{ news_data }}</p>
+
+    <!-- News Section -->
+    <section class="news-section">
+        <h2>Latest ICC News</h2>
+        {% if news_data %}
+            {% for news in news_data %}
+            <div class="news-item">
+                <h3><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h3>
+                <p>{{ news.date }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No news available at the moment.</p>
+        {% endif %}
+    </section>
+
+    <!-- Existing Sections -->
+    <section class="carousel" id="news">
+        <h2>News</h2>
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-item">
+                    <div class="news-card">
+                        <img src="{{ url_for('static', filename='images/news-image1.jpg') }}" alt="News Image">
+                        <div class="news-content">
+                            <h3>News Title 1</h3>
+                            <p>Brief description about news 1...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="news-card">
+                        <img src="{{ url_for('static', filename='images/news-image2.jpg') }}" alt="News Image">
+                        <div class="news-content">
+                            <h3>News Title 2</h3>
+                            <p>Brief description about news 2...</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional news cards -->
+            </div>
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="carousel" id="videos">
+        <h2>Videos</h2>
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/thHbT9qjgqI?si=PE-sN8bcQ4LeZf_d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7tJfvLru1N0?si=5Jtwku85cisPlMxo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/Y1J9_9-vNcU?si=OjBB9j4Xo5NjCOKw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="video-card">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+</body>
+</html>

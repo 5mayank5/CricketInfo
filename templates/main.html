@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#matches">Live Scores</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#series">Series</a></li>
+                <li><a href="#teams">Teams</a></li>
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#ranking">Ranking</a></li>
+                <li class="icon"><img src="{{ url_for('static', filename='images/trophy.jpg') }}" alt="Trophy Icon"></li>
+                <li class="icon"><img src="{{ url_for('static', filename='images/search.jpg') }}" alt="Search Icon"></li>
+                <li class="icon"><img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Settings Icon"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Matches Carousel -->
+        <section class="carousel" id="matches">
+            <h2>Matches</h2>
+            <div class="carousel-content">
+                {% for score in scores %}
+                <div class="card">
+                    <img src="{{ score.team1.img }}" alt="{{ score.team1.name }}">
+                    <p>{{ score.team1.name }} vs {{ score.team2.name }}</p>
+                    <p>Status: {{ score.status }}</p>
+                    <p>Score: {{ score.team1.score }} - {{ score.team2.score }}</p>
+                    <p>Series: {{ score.series }}</p>
+                    <img src="{{ score.team2.img }}" alt="{{ score.team2.name }}">
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="carousel" id="news">
+            <h2>News</h2>
+            <div class="carousel-content">
+                <!-- Add news content here -->
+            </div>
+        </section>
+
+        <!-- Videos Section -->
+        <section class="carousel" id="videos">
+            <h2>Videos</h2>
+            <div class="carousel-content">
+                <!-- Add video content here -->
+            </div>
+        </section>
+
+        <!-- Series Section -->
+        <section class="carousel" id="series">
+            <h2>Upcoming Series</h2>
+            <div class="carousel-content">
+                {% for series in series %}
+                <div class="card">
+                    <h3>{{ series.name }}</h3>
+                    <p>Start Date: {{ series.startDate }}</p>
+                    <p>End Date: {{ series.endDate }}</p>
+                    <p>ODIs: {{ series.odi }}</p>
+                    <p>T20s: {{ series.t20 }}</p>
+                    <p>Tests: {{ series.test }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Footer Content</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
