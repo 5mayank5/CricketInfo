@@ -3,15 +3,18 @@ import requests
 from flask_cors import CORS
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
-from bs4 import BeautifulSoup
 from dotenv import dotenv_values
+import http.client, urllib.parse
+import json
 
+
+# Load API keys and configuration from .env file
 config = dotenv_values(".env")
 app = Flask(__name__, static_folder='static')
 CORS(app)
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 
-# MongoDB Connection
+# MongoDB Connection Setup
 client = MongoClient('mongodb://localhost:27017')
 db = client['cricket']
 users_collection = db['users']
@@ -19,8 +22,9 @@ users_collection = db['users']
 # API Endpoints
 LIVE_SCORE_API = config['LIVE_SCORE_API']
 SERIES_API = config['SERIES_API']
+MEDIASTACK_API_KEY = config['MEDIASTACK_API_KEY']
 
-
+# Fetch data from an API
 def fetch_data(url):
     try:
         response = requests.get(url)
@@ -30,39 +34,35 @@ def fetch_data(url):
         print(f"Error fetching data: {e}")
         return {}
 
-def scrape_icc_news():
+# Fetch cricket news from Mediastack API
+def fetch_news_api():
+    conn = http.client.HTTPConnection('api.mediastack.com')
+    params = urllib.parse.urlencode({
+        'access_key': config['MEDIASTACK_API_KEY'],  # Use your actual API key from .env
+        'categories': '-general,-sports',      # Exclude general and sports categories
+        'keywords': 'cricket',                 # Filter for cricket-related news
+        'sort': 'published_desc',
+        'limit': 10                            # Limit results to 10 news items
+    })
+    
     try:
-        url = "https://www.icc-cricket.com/news"
-        response = requests.get(url)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        news_items = soup.find_all('div', class_='news-card')
-        
-        news_data = []
-        for item in news_items[:5]:  # Limit to 5 news items
-            title = item.find('h3', class_='news-card__title').text.strip()
-            date = item.find('time', class_='news-card__date').text.strip()
-            link = 'https://www.icc-cricket.com' + item.find('a')['href']
-            
-            news_data.append({
-                'title': title,
-                'date': date,
-                'link': link
-            })
-        
-        print("Scraped news data:", news_data)  # Debug print
-        return news_data
+        conn.request('GET', f'/v1/news?{params}')
+        res = conn.getresponse()
+        data = res.read().decode('utf-8')
+        news_data = json.loads(data)
+        return news_data.get('data', [])
     except Exception as e:
-        print(f"Error scraping ICC news: {e}")
+        print(f"Error fetching news: {e}")
         return []
 
+# Route: Homepage (Navbar)
 @app.route('/')
 def navbar():
-    news_data = scrape_icc_news()
+    news_data = fetch_news_api()
     print("News data in navbar route:", news_data)  # Debug print
     return render_template('nav-bar.html', news_data=news_data)
 
+# Route: User Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -79,6 +79,7 @@ def login():
     
     return render_template('login.html')
 
+# Route: User Signup
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -96,12 +97,14 @@ def signup():
     
     return render_template('signup.html')
 
+# Route: User Logout
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
     flash('Logged out successfully', 'success')
     return redirect(url_for('navbar'))
 
+# Route: Main Live Score Page
 @app.route('/main')
 def main():
     live_scores = fetch_data(LIVE_SCORE_API).get('data', [])
@@ -133,9 +136,8 @@ def main():
             }
         })
     
-    news_data = scrape_icc_news()
-    print("News data in main route:", news_data)  # Debug print
-    return render_template('main.html', scores=scores, news_data=news_data)
+   
 
+# Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)

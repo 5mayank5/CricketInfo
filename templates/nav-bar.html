@@ -23,9 +23,48 @@
         .news-item p {
             margin-bottom: 5px;
         }
+        .carousel {
+            margin-top: 40px;
+        }
+        .carousel-container {
+            position: relative;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        .video-card {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar Section -->
     <nav class="navbar">
         <div class="logo">
             <img src="{{ url_for('static', filename='images/cricbuzz-logo.png') }}" alt="Cricbuzz Logo">
@@ -79,17 +118,15 @@
         </ul>
     </nav>
 
-    <!-- Debug statement -->
-    <p>Debug - News data: {{ news_data }}</p>
-
     <!-- News Section -->
     <section class="news-section">
-        <h2>Latest ICC News</h2>
+        <h2>Latest Cricket News</h2>
         {% if news_data %}
             {% for news in news_data %}
             <div class="news-item">
-                <h3><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h3>
-                <p>{{ news.date }}</p>
+                <h3>{{ news['title'] }}</h3>
+                <p>{{ news['description'] }}</p>
+                <a href="{{ news['url'] }}" target="_blank">Read more</a>
             </div>
             {% endfor %}
         {% else %}
@@ -97,68 +134,21 @@
         {% endif %}
     </section>
 
-    <!-- Existing Sections -->
-    <section class="carousel" id="news">
-        <h2>News</h2>
-        <div class="carousel-container">
-            <div class="carousel-wrapper">
-                <div class="carousel-item">
-                    <div class="news-card">
-                        <img src="{{ url_for('static', filename='images/news-image1.jpg') }}" alt="News Image">
-                        <div class="news-content">
-                            <h3>News Title 1</h3>
-                            <p>Brief description about news 1...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="news-card">
-                        <img src="{{ url_for('static', filename='images/news-image2.jpg') }}" alt="News Image">
-                        <div class="news-content">
-                            <h3>News Title 2</h3>
-                            <p>Brief description about news 2...</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Additional news cards -->
-            </div>
-            <button class="prev">&#10094;</button>
-            <button class="next">&#10095;</button>
-        </div>
-    </section>
+    
 
+    <!-- Carousel Section for Videos -->
     <section class="carousel" id="videos">
         <h2>Videos</h2>
         <div class="carousel-container">
             <div class="carousel-wrapper">
                 <div class="carousel-item">
                     <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/thHbT9qjgqI?si=PE-sN8bcQ4LeZf_d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/thHbT9qjgqI" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7tJfvLru1N0?si=5Jtwku85cisPlMxo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="video-card">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/Y1J9_9-vNcU?si=OjBB9j4Xo5NjCOKw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo?si=_5oT1OqNsOXdQJmE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
