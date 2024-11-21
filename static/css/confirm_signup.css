@@ -39,10 +39,8 @@ label {
     color: #333;
 }
 
-input[type="text"],
 input[type="email"],
-input[type="tel"],
-input[type="password"] {
+input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -95,10 +93,8 @@ li.error {
         font-size: 1.5rem;
     }
 
-    input[type="text"],
     input[type="email"],
-    input[type="tel"],
-    input[type="password"] {
+    input[type="text"] {
         font-size: 14px;
     }
 

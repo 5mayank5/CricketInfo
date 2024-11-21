@@ -17,9 +17,9 @@
                 <li><a href="#teams">Teams</a></li>
                 <li><a href="#videos">Videos</a></li>
                 <li><a href="#ranking">Ranking</a></li>
-                <li class="icon"><img src="{{ url_for('static', filename='images/trophy.jpg') }}" alt="Trophy Icon"></li>
-                <li class="icon"><img src="{{ url_for('static', filename='images/search.jpg') }}" alt="Search Icon"></li>
-                <li class="icon"><img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Settings Icon"></li>
+                <li class="icon"><img src="{{ url_for('static', filename='trophy.jpg') }}" alt="Trophy Icon"></li>
+                <li class="icon"><img src="{{ url_for('static', filename='th.jpg') }}" alt="Search Icon"></li>
+                <li class="icon"><img src="{{ url_for('static', filename='profile.jpg') }}" alt="Settings Icon"></li>
             </ul>
         </nav>
     </header>
@@ -44,9 +44,30 @@
 
         <!-- News Section -->
         <section class="carousel" id="news">
-            <h2>News</h2>
-            <div class="carousel-content">
-                <!-- Add news content here -->
+            <h2>Latest Cricket News</h2>
+            <div class="news-carousel">
+                <div class="news-carousel-wrapper">
+                    {% if news_data %}
+                        {% for news in news_data %}
+                        <div class="news-card">
+                            {% if news.get('image_url') %}
+                                <img src="{{ news['image_url'] }}" alt="News Image">
+                            {% endif %}
+                            <div class="news-card-content">
+                                <h3 class="news-card-title">{{ news.get('title', 'No Title') }}</h3>
+                                <p class="news-card-description">{{ news.get('description', 'No description available.') }}</p>
+                                {% if news.get('url') %}
+                                    <a class="news-card-link" href="{{ news['url'] }}" target="_blank">Read more</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No news available at the moment.</p>
+                    {% endif %}
+                </div>
+                <button class="carousel-button carousel-button-prev">&#10094;</button>
+                <button class="carousel-button carousel-button-next">&#10095;</button>
             </div>
         </section>
 

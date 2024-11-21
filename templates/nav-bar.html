@@ -6,29 +6,92 @@
     <title>CRICKETINFO</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav-bar.css') }}">
     <style>
+        /* Existing styles for navbar and carousels */
+
         .news-section {
             margin-top: 20px;
             padding: 20px;
             background-color: #f0f0f0;
         }
-        .news-item {
-            margin-bottom: 15px;
-            padding: 10px;
+        .news-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto;
+            overflow: hidden;
+        }
+        .news-carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .news-card {
+            flex: 0 0 300px;
+            margin: 0 15px;
             background-color: white;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        .news-item h3 {
-            margin-top: 0;
+        .news-card:hover {
+            transform: translateY(-5px);
         }
-        .news-item p {
-            margin-bottom: 5px;
+        .news-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
         }
-        .carousel {
+        .news-card-content {
+            padding: 20px;
+        }
+        .news-card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .news-card-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .news-card-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #0078d4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .carousel-button-prev {
+            left: 10px;
+        }
+        .carousel-button-next {
+            right: 10px;
+        }
+
+        /* Video Carousel Styles */
+        .video-carousel {
             margin-top: 40px;
         }
         .carousel-container {
             position: relative;
-            max-width: 100%;
+            width: 80%;
+            margin: auto;
             overflow: hidden;
         }
         .carousel-wrapper {
@@ -36,8 +99,14 @@
             transition: transform 0.5s ease-in-out;
         }
         .carousel-item {
-            min-width: 100%;
+            flex: 0 0 300px;
+            margin-right: 20px;
             box-sizing: border-box;
+        }
+        .video-card iframe {
+            width: 100%;
+            height: 180px;
+            border: none;
         }
         .prev, .next {
             cursor: pointer;
@@ -50,16 +119,13 @@
             color: white;
             border: none;
             border-radius: 50%;
+            z-index: 1;
         }
         .prev {
             left: 10px;
         }
         .next {
             right: 10px;
-        }
-        .video-card {
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
@@ -70,85 +136,62 @@
             <img src="{{ url_for('static', filename='images/cricbuzz-logo.png') }}" alt="Cricbuzz Logo">
         </div>
         <ul class="nav-links">
+            <li><a href="/">Home</a></li>
             <li><a href="#">Live Scores</a></li>
             <li><a href="#">Schedule</a></li>
             <li><a href="#">Archives</a></li>
-            <li class="dropdown">
-                <a href="#">News &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Latest News</a></li>
-                    <li><a href="#">Top Stories</a></li>
-                    <li><a href="#">Editor's Pick</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Series &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Upcoming Series</a></li>
-                    <li><a href="#">Ongoing Series</a></li>
-                    <li><a href="#">Recent Series</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Teams &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Team A</a></li>
-                    <li><a href="#">Team B</a></li>
-                    <li><a href="#">Team C</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Videos &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">Latest Videos</a></li>
-                    <li><a href="#">Popular Videos</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Rankings &#9662;</a>
-                <ul class="dropdown-content">
-                    <li><a href="#">ODI Rankings</a></li>
-                    <li><a href="#">Test Rankings</a></li>
-                    <li><a href="#">T20 Rankings</a></li>
-                </ul>
-            </li>
-            <li><a href="/login">Cricbuzz Plus</a></li>
-            <li><a href="#"><img src="{{ url_for('static', filename='images/search-icon.png') }}" alt="Search"></a></li>
-            <li><a href="#"><img src="{{ url_for('static', filename='images/profile-icon.png') }}" alt="Profile"></a></li>
+
+            <!-- Conditionally show the main page link only if the user is logged in and subscribed -->
+            {% if session.get('user_id') %}
+                {% set user = users_collection.find_one({'_id': ObjectId(session['user_id'])}) %}
+                {% if user and user.get('is_subscribed') %}
+                    <li><a href="{{ url_for('main') }}">Main Page</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('subscribe') }}">Subscribe</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Signup</a></li>
+            {% endif %}
         </ul>
     </nav>
 
     <!-- News Section -->
     <section class="news-section">
         <h2>Latest Cricket News</h2>
-        {% if news_data %}
-            {% for news in news_data %}
-            <div class="news-item">
-                <h3>{{ news['title'] }}</h3>
-                <p>{{ news['description'] }}</p>
-                <a href="{{ news['url'] }}" target="_blank">Read more</a>
+        <div class="news-carousel">
+            <div class="news-carousel-wrapper">
+                {% if news_data %}
+                    {% for news in news_data %}
+                    <div class="news-card">
+                        <img src="{{ news['image_url'] }}" alt="News Image">
+                        <div class="news-card-content">
+                            <h3 class="news-card-title">{{ news['title'] }}</h3>
+                            <p class="news-card-description">{{ news['description'] }}</p>
+                            <a class="news-card-link" href="{{ news['url'] }}" target="_blank">Read more</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No news available at the moment.</p>
+                {% endif %}
             </div>
-            {% endfor %}
-        {% else %}
-            <p>No news available at the moment.</p>
-        {% endif %}
+        </div>
     </section>
 
-    
-
     <!-- Carousel Section for Videos -->
-    <section class="carousel" id="videos">
+    <section class="video-carousel" id="videos">
         <h2>Videos</h2>
         <div class="carousel-container">
             <div class="carousel-wrapper">
                 <div class="carousel-item">
                     <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/thHbT9qjgqI" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/thHbT9qjgqI" title="YouTube video player"></iframe>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="video-card">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xKJOJg4MkSo" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/xKJOJg4MkSo" title="YouTube video player"></iframe>
                     </div>
                 </div>
             </div>
@@ -157,6 +200,6 @@
         </div>
     </section>
 
-    <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/carousels.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/confirm_signup.css') }}">
+</head>
+<body>
+    <h2>Confirm Your Account</h2>
+    <form method="POST" action="{{ url_for('confirm_signup') }}">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div>
+            <label for="code">Confirmation Code:</label>
+            <input type="text" id="code" name="code" required>
+        </div>
+
+        <button type="submit">Confirm</button>
+    </form>
+
+    <h3>Didn't receive a code?</h3>
+    <form method="POST" action="{{ url_for('resend_confirmation_code') }}">
+        <div>
+            <label for="resend_username">Username:</label>
+            <input type="text" id="resend_username" name="username" required>
+        </div>
+        <button type="submit">Resend Confirmation Code</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

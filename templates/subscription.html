@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Subscription</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subscription.css') }}">
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="POST" action="{{ url_for('login') }}">
+    <h2>Choose Your Subscription</h2>
+    <form method="POST" action="{{ url_for('subscription') }}">
         <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="radio" id="basic" name="subscription_type" value="basic" required>
+            <label for="basic">Basic Plan</label>
         </div>
         <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="radio" id="premium" name="subscription_type" value="premium" required>
+            <label for="premium">Premium Plan</label>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Subscribe</button>
     </form>
 
     {% with messages = get_flashed_messages(with_categories=true) %}

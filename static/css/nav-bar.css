@@ -40,118 +40,33 @@ body {
 
 .nav-links a:hover {
     background-color: #009688;
-    border-radius: 5px;
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: white;
-    min-width: 160px;
+    top: 100%;
+    left: 0;
+    background-color: #009688;
+    min-width: 150px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
+    padding: 10px;
     display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-.nav-links img {
-    width: 20px;
-    height: 20px;
+.nav-links li a img {
+    width: 30px;
 }
 
-/* Carousel Section */
-.carousel {
-    margin: 50px 0;
-    text-align: center;
-}
-
-.carousel h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.carousel-container {
-    position: relative;
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
-
-.carousel-wrapper {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-item {
-    min-width: 300px;
-    margin-right: 20px;
-}
-
-/* News and Video Cards */
-.news-card, .video-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 300px;
-    text-align: left;
-}
-
-.news-card img, .video-card img {
-    width: 800px;
-    height: 450px;
-    object-fit: cover;
-}
-
-.news-content, .video-content {
-    padding: 15px;
-}
-
-.news-content h3, .video-content h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.news-content p, .video-content p {
-    font-size: 14px;
-    color: #666;
-}
-
-/* Carousel Navigation */
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    z-index: 1;
-}
-
-.prev {
-    left: 10px;
-}
-
-.next {
-    right: 10px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+/* Hover Effect */
+.navbar a:hover {
+    background-color: #004d40;
 }
