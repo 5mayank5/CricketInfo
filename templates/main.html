@@ -14,12 +14,18 @@
                 <li><a href="#schedule">Schedule</a></li>
                 <li><a href="#news">News</a></li>
                 <li><a href="#series">Series</a></li>
-                <li><a href="#teams">Teams</a></li>
                 <li><a href="#videos">Videos</a></li>
-                <li><a href="#ranking">Ranking</a></li>
                 <li class="icon"><img src="{{ url_for('static', filename='trophy.jpg') }}" alt="Trophy Icon"></li>
                 <li class="icon"><img src="{{ url_for('static', filename='th.jpg') }}" alt="Search Icon"></li>
-                <li class="icon"><img src="{{ url_for('static', filename='profile.jpg') }}" alt="Settings Icon"></li>
+                <li class="icon dropdown">
+                    <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Settings Icon" class="dropbtn">
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('profile') }}">Profile</a>
+                        <a href="{{ url_for('settings') }}">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -43,22 +49,17 @@
         </section>
 
         <!-- News Section -->
-        <section class="carousel" id="news">
+        <section class="news-section">
             <h2>Latest Cricket News</h2>
             <div class="news-carousel">
-                <div class="news-carousel-wrapper">
+                <div class="news-carousel-wrapper" id="newsCarouselWrapper">
                     {% if news_data %}
                         {% for news in news_data %}
                         <div class="news-card">
-                            {% if news.get('image_url') %}
-                                <img src="{{ news['image_url'] }}" alt="News Image">
-                            {% endif %}
                             <div class="news-card-content">
-                                <h3 class="news-card-title">{{ news.get('title', 'No Title') }}</h3>
-                                <p class="news-card-description">{{ news.get('description', 'No description available.') }}</p>
-                                {% if news.get('url') %}
-                                    <a class="news-card-link" href="{{ news['url'] }}" target="_blank">Read more</a>
-                                {% endif %}
+                                <h3 class="news-card-title">{{ news['title'] }}</h3>
+                                <p class="news-card-description">{{ news['description'] }}</p>
+                                <a class="news-card-link" href="{{ news['url'] }}" target="_blank">Read more</a>
                             </div>
                         </div>
                         {% endfor %}
@@ -66,16 +67,54 @@
                         <p>No news available at the moment.</p>
                     {% endif %}
                 </div>
-                <button class="carousel-button carousel-button-prev">&#10094;</button>
-                <button class="carousel-button carousel-button-next">&#10095;</button>
+                <button class="carousel-button carousel-button-prev" id="newsPrev">&#10094;</button>
+                <button class="carousel-button carousel-button-next" id="newsNext">&#10095;</button>
             </div>
         </section>
 
         <!-- Videos Section -->
-        <section class="carousel" id="videos">
+        <section class="video-carousel" id="videos">
             <h2>Videos</h2>
-            <div class="carousel-content">
-                <!-- Add video content here -->
+            <div class="carousel-container">
+                <div class="carousel-wrapper" id="videoCarouselWrapper">
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/thHbT9qjgqI" title="YouTube video player"></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/xKJOJg4MkSo" title="YouTube video player"></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/F0_aypvtW8Y?si=xNwxOykTka2Py2Sk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/HQx6ParyBAA?si=idAYFbXn1OJooSP6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/M9bjIcUSn7c?si=EhCxwHKTNg-D82yv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/aXhDkAhgoCM?si=L2mXeKUnkQ-OABju" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="video-card">
+                            <iframe src="https://www.youtube.com/embed/0b8uGvvf_jE?si=zD-iAEPD55bsQ8y-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                <button class="prev" id="videoPrev">&#10094;</button>
+                <button class="next" id="videoNext">&#10095;</button>
             </div>
         </section>
 

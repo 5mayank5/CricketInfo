@@ -292,7 +292,7 @@ def fetch_news_api():
         'access_key': MEDIASTACK_API_KEY,
         'keywords': 'cricket',
         'sort': 'published_desc',
-        'limit': 10
+        'limit': 20
     })
     
     try:
@@ -311,6 +311,18 @@ def fetch_news_api():
 def navbar():
     news_data = fetch_news_api()
     return render_template('nav-bar.html', news_data=news_data)
+
+@app.route('/profile')
+def profile():
+    # Add your profile page logic here
+    # You might want to check if user is logged in
+    return render_template('profile.html')
+
+@app.route('/settings')
+def settings():
+    # Add your settings page logic here
+    # You might want to check if user is logged in
+    return render_template('settings.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
